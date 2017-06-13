@@ -3,6 +3,7 @@ package com.example.mike.footballtickets.Activities;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -36,10 +37,14 @@ public class QrScannerAcitvity extends AppCompatActivity implements ZBarScannerV
                 mScannerView = new ZBarScannerView(getApplicationContext());    // Programmatically initialize the scanner view
                 setContentView(mScannerView);
                 mScannerView.setResultHandler(QrScannerAcitvity.this);
-                if (checkSelfPermission(Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
-                    requestPermissions(new String[]{Manifest.permission.CAMERA},MY_CAMERA_REQUEST_CODE);
-                }else
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                    } else
+                        mScannerView.startCamera();
+                }else {
                     mScannerView.startCamera();
+                }
             }
         });
     }
