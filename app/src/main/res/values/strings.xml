@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">FootballTickets</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="title_activity_test_home">testActivityHome</string>
+    <string name="title_activity_account">Account</string>
+    <string name="title_activity_qr_scanner_acitvity">QrScannerAcitvity</string>
+</resources>
