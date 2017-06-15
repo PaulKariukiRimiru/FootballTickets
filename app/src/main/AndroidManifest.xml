@@ -44,7 +44,15 @@
             android:label="@string/title_activity_qr_scanner_acitvity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.Payments" />
-        <activity android:name=".Activities.AboutActivity"></activity>
+        <activity android:name=".Activities.AboutActivity" />
+        <activity
+            android:name=".Activities.TeamAccount"
+            android:label="@string/title_activity_team_account"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.TeamMainActivity"
+            android:label="@string/title_activity_team_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

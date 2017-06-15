@@ -13,4 +13,6 @@
     <string name="title_activity_test_home">testActivityHome</string>
     <string name="title_activity_account">Account</string>
     <string name="title_activity_qr_scanner_acitvity">QrScannerAcitvity</string>
+    <string name="title_activity_team_account">TeamAccount</string>
+    <string name="title_activity_team_main">TeamMainActivity</string>
 </resources>
