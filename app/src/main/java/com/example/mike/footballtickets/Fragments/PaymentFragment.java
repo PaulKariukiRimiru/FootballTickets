@@ -99,7 +99,7 @@ public class PaymentFragment extends Fragment {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.pay();
+                //mListener.pay();
 
                 Toast.makeText(getContext(), "Transaction complete",Toast.LENGTH_SHORT).show();
 

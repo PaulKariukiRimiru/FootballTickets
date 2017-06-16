@@ -17,4 +17,5 @@ public class CartList implements Serializable {
     public void setCartobjects(List<IMainObject> cartobjects) {
         this.cartobjects = cartobjects;
     }
+
 }

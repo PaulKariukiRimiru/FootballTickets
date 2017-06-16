@@ -1,29 +1,31 @@
 package com.example.mike.footballtickets.Fragments;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.mike.footballtickets.Activities.HomeActivity;
-import com.example.mike.footballtickets.Activities.MainActivity;
-import com.example.mike.footballtickets.Activities.TeamMainActivity;
 import com.example.mike.footballtickets.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * {@link ReportFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link ReportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment  extends Fragment {
+public class ReportFragment extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,7 +37,7 @@ public class LoginFragment  extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoginFragment() {
+    public ReportFragment() {
         // Required empty public constructor
     }
 
@@ -45,16 +47,24 @@ public class LoginFragment  extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment ReportFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static ReportFragment newInstance(String param1, String param2) {
+        ReportFragment fragment = new ReportFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog =  super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Override
@@ -70,16 +80,19 @@ public class LoginFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        View view = inflater.inflate(R.layout.fragment_report, container, false);
+        TextView textView = (TextView) view.findViewById(R.id.textView10);
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView5);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton5);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), HomeActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                dismiss();
+                mListener.startCamera();
             }
         });
+
         return view;
     }
 
@@ -120,5 +133,6 @@ public class LoginFragment  extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void startCamera();
     }
 }

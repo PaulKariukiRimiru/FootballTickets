@@ -18,6 +18,7 @@ import com.example.mike.footballtickets.Pojo.CartList;
 import com.example.mike.footballtickets.Pojo.CartObject;
 import com.example.mike.footballtickets.Pojo.IMainObject;
 import com.example.mike.footballtickets.Pojo.MainMatchObject;
+import com.example.mike.footballtickets.Pojo.SeasonCartObject;
 import com.example.mike.footballtickets.R;
 
 import java.util.List;
@@ -53,20 +54,28 @@ public class CartActivity extends AppCompatActivity implements DataRemovalInterf
                 int price = 0;
                 int items = 0;
                 for (IMainObject iMainObject : mainMatchesItem){
-                    CartObject cartObject = (CartObject) iMainObject;
-                    MainMatchObject matchObject = new MainMatchObject();
-                    if (cartObject != null){
-                        price += cartObject.getNumberOfTickets()*cartObject.getPrice();
-                        items += cartObject.getNumberOfTickets();
-                        matchObject.setHomeName(cartObject.getHomeTeam());
-                        matchObject.setAwayName(cartObject.getAwayTeam());
-                        matchObject.setLocation(cartObject.getLocation());
-                        matchObject.setMatchId(cartObject.getMatchId());
-                        matchObject.setTime(cartObject.getTime());
-                        matchObject.setTicketPrice(cartObject.getPrice());
-                        matchObject.setHomeLogo(cartObject.getHomeLogo());
-                        matchObject.setAwayLogo(cartObject.getAwaylogo());
+                    if (iMainObject instanceof CartObject){
+                        CartObject cartObject = (CartObject) iMainObject;
+                        MainMatchObject matchObject = new MainMatchObject();
+                        if (cartObject != null){
+                            price += cartObject.getNumberOfTickets()*cartObject.getPrice();
+                            items += cartObject.getNumberOfTickets();
+
+                            matchObject.setMatchId(cartObject.getMatchId());
+                            matchObject.setTicketPrice(cartObject.getPrice());
+                        }
+                    }else if (iMainObject instanceof SeasonCartObject){
+                        SeasonCartObject cartObject = (SeasonCartObject) iMainObject;
+                        MainMatchObject matchObject = new MainMatchObject();
+                        if (cartObject != null){
+                            price += cartObject.getNoOfTickets()*cartObject.getPrice();
+                            items += cartObject.getNoOfTickets();
+
+                            matchObject.setMatchId(cartObject.getClubId());
+                            matchObject.setTicketPrice(cartObject.getPrice());
+                        }
                     }
+
                 }
 
                 CartList cartList1 = new CartList();

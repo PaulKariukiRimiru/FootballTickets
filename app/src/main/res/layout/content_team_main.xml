@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#fff"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.mike.footballtickets.Activities.TeamMainActivity"
+    tools:showIn="@layout/app_bar_main">
 
 
     <android.support.v7.widget.CardView
@@ -19,6 +22,17 @@
         app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/textView19">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mrl_rippleColor="@color/colorPrimary"
+            app:mrl_rippleDuration="200"
+            app:mrl_rippleFadeDuration="75"
+            app:mrl_rippleDelayClick="true"
+            app:mrl_rippleOverlay="true"
+            app:mrl_rippleAlpha="0.8"
+            android:id="@+id/ripMainItem">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -38,7 +52,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tvOpponent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -55,8 +69,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Tickets"
-                app:layout_constraintStart_toStartOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintStart_toStartOf="@+id/tvOpponent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOpponent" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -82,7 +96,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/tvtickets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -93,24 +107,25 @@
                 app:layout_constraintStart_toEndOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/tvsold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:text="300 Tickets"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
-                app:layout_constraintStart_toStartOf="@+id/textView15" />
+                app:layout_constraintStart_toStartOf="@+id/tvtickets" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/tvammount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:text="Ksh. 300000"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
-                app:layout_constraintStart_toStartOf="@+id/textView16" />
+                app:layout_constraintStart_toStartOf="@+id/tvsold" />
 
         </android.support.constraint.ConstraintLayout>
+        </com.balysv.materialripple.MaterialRippleLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.constraint.Guideline
@@ -121,16 +136,17 @@
         app:layout_constraintGuide_percent="0.36" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/viewMainmatches"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        android:layout_marginTop="0dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <TextView
         android:id="@+id/textView18"
@@ -141,6 +157,7 @@
         android:layout_marginTop="8dp"
         android:text="1/1/2017"
         android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/textView19"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +172,7 @@
         android:layout_marginTop="8dp"
         android:text="Upcoming matches"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

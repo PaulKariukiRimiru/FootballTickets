@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import com.example.mike.footballtickets.Delegates.AccountDelegate;
 import com.example.mike.footballtickets.Delegates.CartDelegate;
 import com.example.mike.footballtickets.Delegates.MatchesDelegate;
+import com.example.mike.footballtickets.Delegates.SeasonCartDelegate;
+import com.example.mike.footballtickets.Delegates.SeasonDelegate;
+import com.example.mike.footballtickets.Delegates.TeamDelegate;
 import com.example.mike.footballtickets.Delegates.TicketsDelegate;
 import com.example.mike.footballtickets.Interfaces.DataRemovalInterface;
 import com.example.mike.footballtickets.Interfaces.DataTransferInterface;
@@ -28,14 +31,14 @@ public class MainAdapter extends RecyclerView.Adapter {
     public MainAdapter(Context context, List<IMainObject> mainObjects, DataTransferInterface dataTransferInterface, DataRemovalInterface dataRemovalInterface, NavigationInterface navigationInterface){
         this.mainObjects = mainObjects;
         manager = new AdapterDelegatesManager<>();
-        if (dataRemovalInterface != null){
             manager.addDelegate(new CartDelegate(context, dataRemovalInterface));
             manager.addDelegate(new TicketsDelegate(context,dataRemovalInterface));
             manager.addDelegate(new AccountDelegate(context,dataRemovalInterface, navigationInterface));
-        }
-        if (dataTransferInterface != null) {
             manager.addDelegate(new MatchesDelegate(context, dataTransferInterface));
-        }
+            manager.addDelegate(new TeamDelegate(context, dataTransferInterface));
+            manager.addDelegate(new SeasonDelegate(context,dataTransferInterface));
+            manager.addDelegate(new SeasonCartDelegate(context, dataRemovalInterface));
+
     }
 
     @Override

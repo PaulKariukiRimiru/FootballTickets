@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         List<IMainObject> objects = new ArrayList<>();
         for (int i=1; i <=20; i++){
             MainMatchObject matchObject = new MainMatchObject();

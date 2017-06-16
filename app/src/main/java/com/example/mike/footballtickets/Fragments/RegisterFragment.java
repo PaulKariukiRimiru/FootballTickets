@@ -72,6 +72,9 @@ public class RegisterFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 Fragment login = LoginFragment.newInstance("","");
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment,login);
