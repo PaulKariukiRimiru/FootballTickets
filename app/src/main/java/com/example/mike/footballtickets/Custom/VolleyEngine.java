@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,6 +12,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mike.footballtickets.Activities.HomeActivity;
+import com.example.mike.footballtickets.Activities.TeamMainActivity;
+import com.example.mike.footballtickets.Interfaces.NavigationInterface;
 import com.example.mike.footballtickets.Pojo.IMainObject;
 import com.qintong.library.InsLoadingView;
 
@@ -84,16 +88,39 @@ public class VolleyEngine {
         return mainObjects;
     }
 
-    public void postContent(String url, final HashMap<String, String> params, final InsLoadingView loadingView){
+    public void postContentLogin(String url, final HashMap<String, String> params, final InsLoadingView loadingView, final NavigationInterface navigationInterface){
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("error")){
+                        Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        loadingView.setVisibility(View.INVISIBLE);
+                    }else {
+                        Toast.makeText(context,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                        loadingView.setVisibility(View.INVISIBLE);
+                        if (!jsonObject.getString("team_id").isEmpty()){
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            context.startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(context, TeamMainActivity.class);
+                            context.startActivity(intent);
+                        }
+                    }
+                } catch (JSONException e) {
 
-                loadingView.setVisibility(View.INVISIBLE);
+                    Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    loadingView.setVisibility(View.INVISIBLE);
+                    e.printStackTrace();
+                }
+
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 loadingView.setVisibility(View.INVISIBLE);
             }
         }){
@@ -106,4 +133,42 @@ public class VolleyEngine {
         requestQueue1.add(request);
     }
 
+    public void postContentRegister(String url, final HashMap<String, String> params, final InsLoadingView loadingView, final NavigationInterface navigationInterface){
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("error")){
+                        Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        loadingView.setVisibility(View.INVISIBLE);
+                    }else {
+                        Toast.makeText(context,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                        loadingView.setVisibility(View.INVISIBLE);
+                        navigationInterface.navigateTo();
+                    }
+                } catch (JSONException e) {
+
+                    Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    loadingView.setVisibility(View.INVISIBLE);
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                loadingView.setVisibility(View.INVISIBLE);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams(){
+                return params;
+            }
+        };
+        RequestQueue requestQueue1 = Volley.newRequestQueue(context);
+        requestQueue1.add(request);
+    }
 }

@@ -10,4 +10,5 @@ import android.support.v4.app.Fragment;
 
 public interface NavigationInterface {
     void navigateToFragment(DialogFragment fragment);
+    void navigateTo();
 }

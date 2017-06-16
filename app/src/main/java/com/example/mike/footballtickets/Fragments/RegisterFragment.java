@@ -4,13 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.mike.footballtickets.Custom.VolleyEngine;
+import com.example.mike.footballtickets.Interfaces.NavigationInterface;
 import com.example.mike.footballtickets.R;
+import com.qintong.library.InsLoadingView;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +29,7 @@ import com.example.mike.footballtickets.R;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements NavigationInterface{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,19 +76,41 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        final View view = inflater.inflate(R.layout.fragment_register, container, false);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        final InsLoadingView loadingView = (InsLoadingView) view.findViewById(R.id.loading_view);
+        loadingView.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                EditText name = (EditText) view.findViewById(R.id.edName);
+                EditText email = (EditText) view.findViewById(R.id.edEmail);
+                EditText password = (EditText) view.findViewById(R.id.edPassword);
+                EditText confirm = (EditText) view.findViewById(R.id.edconfirmPassword);
 
+                if (name.getText().length() == 0 || email.getText().length() == 0 || password.getText().length() == 0 || confirm.getText().length() == 0){
+                    Snackbar.make(v,"Please fill all the fields",Snackbar.LENGTH_SHORT).show();
+                }else {
+                    String tname = name.getText().toString();
+                    String temail = email.getText().toString();
+                    String tpass = password.getText().toString();
+                    String tconfirm = confirm.getText().toString();
 
-                Fragment login = LoginFragment.newInstance("","");
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,login);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                    if (tpass.contentEquals(tconfirm)){
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("name", tname);
+                        params.put("email", temail);
+                        params.put("password",tpass);
+                        loadingView.setVisibility(View.VISIBLE);
+
+                        VolleyEngine volleyEngine = new VolleyEngine(getContext());
+                        String url = "http://192.168.88.141:3000/users/register";
+                        volleyEngine.postContentRegister(url,params,loadingView, RegisterFragment.this);
+                    }
+
+                }
+
             }
         });
         return view;
@@ -107,6 +138,20 @@ public class RegisterFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void navigateToFragment(DialogFragment fragment) {
+
+    }
+
+    @Override
+    public void navigateTo() {
+        Fragment login = LoginFragment.newInstance("","");
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment,login);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**

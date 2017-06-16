@@ -5,15 +5,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.mike.footballtickets.Activities.HomeActivity;
 import com.example.mike.footballtickets.Activities.MainActivity;
 import com.example.mike.footballtickets.Activities.TeamMainActivity;
+import com.example.mike.footballtickets.Custom.VolleyEngine;
+import com.example.mike.footballtickets.Interfaces.NavigationInterface;
 import com.example.mike.footballtickets.R;
+import com.qintong.library.InsLoadingView;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +31,7 @@ import com.example.mike.footballtickets.R;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment  extends Fragment {
+public class LoginFragment  extends Fragment implements NavigationInterface{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,12 +80,29 @@ public class LoginFragment  extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        final InsLoadingView loadingView = (InsLoadingView) view.findViewById(R.id.loading_view);
+        loadingView.setVisibility(View.GONE);
+
+        final TextView name = (TextView) view.findViewById(R.id.edName);
+        final TextView password = (TextView) view.findViewById(R.id.edEmail);
+
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), HomeActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+
+            if (name.getText().length() == 0 || password.getText().length() == 0){
+                Snackbar.make(v, "Fill all fields",Snackbar.LENGTH_SHORT).show();
+            }else {
+                String url = "http://192.168.88.141:3000/users/authenticate";
+                VolleyEngine volleyEngine = new VolleyEngine(getContext());
+                HashMap<String, String> params = new HashMap<>();
+                params.put("email", name.getText().toString());
+                params.put("password", password.getText().toString());
+                volleyEngine.postContentLogin(url, params, loadingView, LoginFragment.this);
+            }
+
             }
         });
         return view;
@@ -105,6 +130,18 @@ public class LoginFragment  extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void navigateToFragment(DialogFragment fragment) {
+
+    }
+
+    @Override
+    public void navigateTo() {
+        Intent intent = new Intent(getContext(), HomeActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     /**

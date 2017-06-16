@@ -82,4 +82,9 @@ public class Account extends AppCompatActivity implements DataRemovalInterface, 
         FragmentManager manager = getSupportFragmentManager();
         fragment.show(manager,"Cart");
     }
+
+    @Override
+    public void navigateTo() {
+
+    }
 }
