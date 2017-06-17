@@ -13,11 +13,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mike.footballtickets.Activities.HomeActivity;
+import com.example.mike.footballtickets.Pojo.CartList;
+import com.example.mike.footballtickets.Pojo.CartObject;
+import com.example.mike.footballtickets.Pojo.IMainObject;
+import com.example.mike.footballtickets.Pojo.SeasonCartObject;
 import com.example.mike.footballtickets.R;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +51,7 @@ public class PaymentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Serializable serializable;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,11 +68,12 @@ public class PaymentFragment extends Fragment {
      * @return A new instance of fragment PaymentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PaymentFragment newInstance(String noOfTickets, String totalPrice) {
+    public static PaymentFragment newInstance(String noOfTickets, String totalPrice, Serializable listObject) {
         PaymentFragment fragment = new PaymentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, noOfTickets);
         args.putString(ARG_PARAM2, totalPrice);
+        args.putSerializable("list", listObject);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +84,7 @@ public class PaymentFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            serializable = getArguments().getSerializable("list");
         }
     }
 
@@ -78,6 +96,8 @@ public class PaymentFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
         String formatedDate = dateFormat.format(calendar.getTime());
+
+        final CartList cartList = (CartList) serializable;
 
         TextView number = (TextView) view.findViewById(R.id.textView6);
         TextView total = (TextView) view.findViewById(R.id.textView7);
@@ -99,6 +119,54 @@ public class PaymentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //mListener.pay();
+
+                List<IMainObject> mainObjectList = cartList.getCartobjects();
+                for (IMainObject mainObject : mainObjectList){
+                    String url = "";
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    if (mainObject instanceof CartObject){
+                        StringRequest stringRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                HashMap<String, String> params = new HashMap<>();
+
+                                return super.getParams();
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+                    }else if (mainObject instanceof SeasonCartObject){
+                        StringRequest stringRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                HashMap<String, String> params = new HashMap<>();
+
+                                return super.getParams();
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+                    }
+                }
+
 
                 Toast.makeText(getContext(), "Transaction complete",Toast.LENGTH_SHORT).show();
 

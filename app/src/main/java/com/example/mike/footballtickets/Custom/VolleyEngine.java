@@ -134,6 +134,22 @@ public class VolleyEngine {
                             int id = jsonObject.getInt("team_id");
                             int ammount = jsonObject.getInt("ammount");
 
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            if (preferences.contains("id")){
+                                editor.remove("id");
+                                editor.putInt("id", jsonObject.getInt("id"));
+                                if (preferences.contains("amount")){
+                                    editor.remove("amount");
+                                    editor.putInt("amount", jsonObject.getInt("amount"));
+                                }
+                                editor.apply();
+                            }else {
+                                editor.putInt("id", jsonObject.getInt("id"));
+                                editor.putInt("amount", jsonObject.getInt("amount"));
+                                editor.apply();
+                            }
+
                             Intent intent = new Intent(context, TeamMainActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("id", id);

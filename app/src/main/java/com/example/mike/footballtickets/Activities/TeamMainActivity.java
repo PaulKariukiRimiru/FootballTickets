@@ -28,6 +28,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.mike.footballtickets.Adapter.MainAdapter;
 import com.example.mike.footballtickets.Fragments.ReportFragment;
@@ -50,12 +56,19 @@ public class TeamMainActivity extends AppCompatActivity
     private ZBarScannerView mScannerView;
     private static final String TAG = "Result";
 
+    int id, amount;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        id = getIntent().getIntExtra("id", 0);
+        amount = getIntent().getIntExtra("ammount", 0);
+
+        name = getIntent().getStringExtra("name");
 
          opponent = (TextView) findViewById(R.id.tvOpponent);
          tickets = (TextView) findViewById(R.id.tvtickets);
@@ -92,15 +105,20 @@ public class TeamMainActivity extends AppCompatActivity
 
 
         List<IMainObject> objects = new ArrayList<>();
-        for (int i=1; i <=20; i++){
-            TeamObject matchObject = new TeamObject();
-            matchObject.setAmmount("Ksh. 20000");
-            matchObject.setOpponent("Thika Unt");
-            matchObject.setSold("200 tickets");
-            matchObject.setTickets("500 seats");
+        String url = ""+id;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
 
-            objects.add(matchObject);
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
 
         TeamObject teamObject = (TeamObject) objects.get(0);
         opponent.setText(teamObject.getOpponent());

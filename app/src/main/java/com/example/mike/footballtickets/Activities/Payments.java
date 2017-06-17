@@ -31,7 +31,7 @@ public class Payments extends AppCompatActivity implements PaymentFragment.OnFra
         CartList cartList = (CartList) getIntent().getSerializableExtra("list");
         mainObjectList = cartList.getCartobjects();
 
-        Fragment register = PaymentFragment.newInstance(String.valueOf(items),String.valueOf(price));
+        Fragment register = PaymentFragment.newInstance(String.valueOf(items),String.valueOf(price), cartList);
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
         transaction1.add(R.id.fragment,register);
         transaction1.addToBackStack(null);
