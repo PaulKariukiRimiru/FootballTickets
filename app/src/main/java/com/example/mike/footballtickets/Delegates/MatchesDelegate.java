@@ -2,7 +2,6 @@ package com.example.mike.footballtickets.Delegates;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.example.mike.footballtickets.Activities.MainActivity;
 import com.example.mike.footballtickets.Interfaces.DataTransferInterface;
 import com.example.mike.footballtickets.Pojo.IMainObject;
 import com.example.mike.footballtickets.Pojo.MainMatchObject;
@@ -39,7 +37,6 @@ public class MatchesDelegate extends AdapterDelegate<List<IMainObject>> {
      * @return true, if this item is responsible,  otherwise false
      */
     private Context context;
-    private MainActivity mainActivity = new MainActivity();
     private List<MainMatchObject> mainMatchObjects = new ArrayList<>();
 
     public MatchesDelegate(Context context, DataTransferInterface dataTransferInterface){

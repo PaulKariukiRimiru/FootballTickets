@@ -77,27 +77,27 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
 
 
-    public List<AccountObject> getAllTickets(){
-        List<AccountObject> accountObjects = new ArrayList<>();
-
-        SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select * from "+TABLE_NAME, null);
-        cursor.moveToFirst();
-
-        while (cursor.isAfterLast() == false){
-            AccountObject object = new AccountObject();
-            object.setMatchId(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_MATCH_ID)));
-            object.setHomeName(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_HOME_NAME)));
-            object.setAwayName(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_AWAY_NAME)));
-            object.setHomeLogo(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_HOME_LOGO)));
-            object.setAwayLogo(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_AWAY_LOGO)));
-            object.setTime(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_TIME)));
-            object.setTicketPrice(Integer.parseInt(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_TICKETPRICE))));
-            object.setLocation(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_LOCATION)));
-            accountObjects.add(object);
-            cursor.moveToNext();
-        }
-
-        return accountObjects;
-    }
+//    public List<AccountObject> getAllTickets(){
+//        List<AccountObject> accountObjects = new ArrayList<>();
+//
+//        SQLiteDatabase database = this.getReadableDatabase();
+//        Cursor cursor = database.rawQuery("select * from "+TABLE_NAME, null);
+//        cursor.moveToFirst();
+//
+//        while (cursor.isAfterLast() == false){
+//            AccountObject object = new AccountObject();
+//            object.setMatchId(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_MATCH_ID)));
+//            object.setHomeName(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_HOME_NAME)));
+//            object.setAwayName(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_AWAY_NAME)));
+//            object.setHomeLogo(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_HOME_LOGO)));
+//            object.setAwayLogo(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_AWAY_LOGO)));
+//            object.setTime(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_TIME)));
+//            object.setTicketCode(Integer.parseInt(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_TICKETPRICE))));
+//            object.setLocation(cursor.getString(cursor.getColumnIndex(TICKETS_COLUMN_LOCATION)));
+//            accountObjects.add(object);
+//            cursor.moveToNext();
+//        }
+//
+//        return accountObjects;
+//    }
 }

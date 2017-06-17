@@ -25,6 +25,9 @@ import com.example.mike.footballtickets.R;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -75,7 +78,15 @@ public class AccountDelegate extends AdapterDelegate<List<IMainObject>> {
         holder1.rippleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment = QrGeneratorFragment.newInstance("4456454d65s5d4fsfdcs65s4dfs6fd48",accountObject.getHomeName()+" Vs "+accountObject.getAwayName());
+                String id = removalInterface.getUserId();
+                String code = accountObject.getTicketCode();
+
+                HashMap<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("code", code);
+
+                JSONObject jsonObject = new JSONObject(params);
+                DialogFragment fragment = QrGeneratorFragment.newInstance(jsonObject.toString(),accountObject.getHomeName()+" Vs "+accountObject.getAwayName());
                 navigationInterface.navigateToFragment(fragment);
             }
         });

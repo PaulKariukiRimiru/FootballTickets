@@ -105,4 +105,9 @@ public class CartActivity extends AppCompatActivity implements DataRemovalInterf
         mainMatchesItem.add(position,object);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public String getUserId() {
+        return null;
+    }
 }

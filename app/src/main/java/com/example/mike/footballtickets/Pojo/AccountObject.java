@@ -11,7 +11,7 @@ public class AccountObject extends IMainObject{
     private String awayName;
     private String awayLogo;
     private String time;
-    private int ticketPrice;
+    private String ticketCode;
     private String location;
 
     public AccountObject(){
@@ -66,12 +66,12 @@ public class AccountObject extends IMainObject{
         this.time = time;
     }
 
-    public int getTicketPrice() {
-        return ticketPrice;
+    public String getTicketCode() {
+        return ticketCode;
     }
 
-    public void setTicketPrice(int ticketPrice) {
-        this.ticketPrice = ticketPrice;
+    public void setTicketCode(String ticketCode) {
+        this.ticketCode = ticketCode;
     }
 
     public String getLocation() {

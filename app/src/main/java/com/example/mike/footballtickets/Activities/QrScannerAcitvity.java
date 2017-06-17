@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +17,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.mike.footballtickets.Fragments.ReportFragment;
 import com.example.mike.footballtickets.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -49,11 +65,56 @@ public class QrScannerAcitvity extends AppCompatActivity implements ZBarScannerV
         });
     }
 
+    String id, code;
     @Override
     public void handleResult(Result result) {
         // Do something with the result here
         Log.v(TAG, result.getContents()); // Prints scan results
         Log.v(TAG, result.getBarcodeFormat().getName()); // Prints the scan format (qrcode, pdf417 etc.)
+        String url = "";
+
+        try {
+            JSONObject jsonObject = new JSONObject(result.toString());
+             id = jsonObject.getString("id");
+             code = jsonObject.getString("code");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (!jsonObject.getBoolean("error")){
+                        DialogFragment dialogFragment = ReportFragment.newInstance("0","");
+                        FragmentManager manager = getSupportFragmentManager();
+                        dialogFragment.show(manager,"1");
+                    }else {
+                        DialogFragment dialogFragment = ReportFragment.newInstance("1","");
+                        FragmentManager manager = getSupportFragmentManager();
+                        dialogFragment.show(manager,"1");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("code", code);
+                return super.getParams();
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
 
         Toast.makeText(this,result.getContents(),Toast.LENGTH_SHORT).show();
         // If you would like to resume scanning, call this method below:

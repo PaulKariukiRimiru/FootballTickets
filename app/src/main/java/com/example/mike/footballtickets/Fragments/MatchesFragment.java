@@ -1,11 +1,9 @@
 package com.example.mike.footballtickets.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,14 +18,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.mike.footballtickets.Activities.CartActivity;
-import com.example.mike.footballtickets.Activities.MainActivity;
 import com.example.mike.footballtickets.Adapter.MainAdapter;
 import com.example.mike.footballtickets.Interfaces.DataTransferInterface;
-import com.example.mike.footballtickets.Pojo.CartList;
 import com.example.mike.footballtickets.Pojo.CartObject;
 import com.example.mike.footballtickets.Pojo.IMainObject;
 import com.example.mike.footballtickets.Pojo.MainMatchObject;

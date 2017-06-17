@@ -9,4 +9,6 @@ import com.example.mike.footballtickets.Pojo.IMainObject;
 public interface DataRemovalInterface {
     void removeObject(IMainObject object, int position);
     void addPrice(IMainObject object, int position);
+
+    String getUserId();
 }

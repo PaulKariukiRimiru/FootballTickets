@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mike.footballtickets.Activities.MainActivity;
+import com.example.mike.footballtickets.Activities.HomeActivity;
 import com.example.mike.footballtickets.R;
 
 import java.text.SimpleDateFormat;
@@ -92,7 +91,7 @@ public class PaymentFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                startActivity(new Intent(getContext(), HomeActivity.class));
             }
         });
 

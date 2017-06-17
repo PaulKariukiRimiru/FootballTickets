@@ -84,6 +84,18 @@ public class ReportFragment extends DialogFragment {
         TextView textView = (TextView) view.findViewById(R.id.textView10);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView5);
 
+        int success = Integer.parseInt(mParam1);
+        switch (success){
+            case 0:
+                textView.setText("Valid");
+                break;
+            case 1:
+                textView.setText("invalid");
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                imageView.setImageResource(R.drawable.ic_error);
+                break;
+        }
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton5);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

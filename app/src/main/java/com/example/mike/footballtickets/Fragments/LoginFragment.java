@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mike.footballtickets.Activities.HomeActivity;
-import com.example.mike.footballtickets.Activities.MainActivity;
-import com.example.mike.footballtickets.Activities.TeamMainActivity;
 import com.example.mike.footballtickets.Custom.VolleyEngine;
 import com.example.mike.footballtickets.Interfaces.NavigationInterface;
 import com.example.mike.footballtickets.R;

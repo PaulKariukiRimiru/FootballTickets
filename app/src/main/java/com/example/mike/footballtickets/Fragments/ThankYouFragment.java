@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mike.footballtickets.Activities.MainActivity;
+import com.example.mike.footballtickets.Activities.HomeActivity;
 import com.example.mike.footballtickets.R;
 
 /**
@@ -73,7 +73,7 @@ public class ThankYouFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                startActivity(new Intent(getContext(), HomeActivity.class));
             }
         });
         return view;

@@ -186,10 +186,6 @@ public class HomeActivity extends AppCompatActivity implements MatchesFragment.O
             intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_scan) {
-            intent = new Intent(this, QrScannerAcitvity.class);
-            startActivity(intent);
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -264,7 +260,7 @@ public class HomeActivity extends AppCompatActivity implements MatchesFragment.O
 
     public void addCounter() {
         this.count += 1;
-        MenuItem itemCart = menu.findItem(R.id.action_cartItems);
+        MenuItem itemCart = menu2.findItem(R.id.action_cartItems);
         LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
         int badgeCount = this.count;
         if (badgeCount > 0) {
@@ -277,7 +273,7 @@ public class HomeActivity extends AppCompatActivity implements MatchesFragment.O
 
     private void removeCount(){
         this.count -= 1;
-        MenuItem itemCart = menu.findItem(R.id.action_cartItems);
+        MenuItem itemCart = menu2.findItem(R.id.action_cartItems);
         LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
         int badgeCount = this.count;
         if (badgeCount > 0) {

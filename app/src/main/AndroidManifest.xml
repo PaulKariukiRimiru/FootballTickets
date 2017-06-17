@@ -26,20 +26,16 @@
         <activity
             android:name=".Activities.CartActivity"
             android:label="@string/title_activity_cart"
-            android:parentActivityName=".Activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.MainActivity"
-            android:label="@string/app_name"
+            android:parentActivityName=".Activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.Account"
             android:label="@string/title_activity_account"
-            android:parentActivityName=".Activities.MainActivity"
+            android:parentActivityName=".Activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mike.footballtickets.Activities.MainActivity" />
+                android:value="com.example.mike.footballtickets.Activities.HomeActivity" />
         </activity>
         <activity
             android:name=".Activities.QrScannerAcitvity"
@@ -54,7 +50,9 @@
         <activity
             android:name=".Activities.TeamMainActivity"
             android:label="@string/title_activity_team_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
         <activity
             android:name=".Activities.HomeActivity"
             android:label="@string/title_activity_home"
