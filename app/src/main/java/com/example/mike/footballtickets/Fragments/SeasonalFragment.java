@@ -4,14 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mike.footballtickets.Activities.CartActivity;
 import com.example.mike.footballtickets.Adapter.MainAdapter;
 import com.example.mike.footballtickets.Interfaces.DataTransferInterface;
@@ -22,6 +32,10 @@ import com.example.mike.footballtickets.Pojo.MainMatchObject;
 import com.example.mike.footballtickets.Pojo.SeasonCartObject;
 import com.example.mike.footballtickets.Pojo.SeasonObject;
 import com.example.mike.footballtickets.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,30 +90,88 @@ public class SeasonalFragment extends Fragment implements DataTransferInterface 
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    MainAdapter mainAdapter;
+    List<IMainObject> objects;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_seasonal, container, false);
 
-        List<IMainObject> objects = new ArrayList<>();
-        for (int i=1; i <=20; i++){
-            SeasonObject seasonObject = new SeasonObject();
-            seasonObject.setClubId(String.valueOf(i));
-            seasonObject.setClubname("Team "+i+1);
-            seasonObject.setClubStadium("Stadium "+i+1);
-            seasonObject.setClubLocation("Location "+i+1);
-            seasonObject.setPrice(2000);
-            objects.add(seasonObject);
-        }
+         objects= getMainObjectList();
 
-        MainAdapter mainAdapter = new MainAdapter(getContext(),objects,this,null, null);
+         mainAdapter= new MainAdapter(getContext(),objects,this,null, null);
         RecyclerView matchesView = (RecyclerView) view.findViewById(R.id.viewMainmatches);
         matchesView.setAdapter(mainAdapter);
+        mainAdapter.notifyDataSetChanged();
         matchesView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
 
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refereshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                objects = getMainObjectList();
+                mainAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        if (isLastItemDisplaying(matchesView)){
+            objects = getMainObjectList();
+            mainAdapter.notifyDataSetChanged();
+        }
+
         return view;
+    }
+    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)
+                return true;
+        }
+        return false;
+    }
+    @NonNull
+    private List<IMainObject> getMainObjectList() {
+        final List<IMainObject> objects = new ArrayList<>();
+        String url = "http://192.168.88.141:3000/teams/show";
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject1) {
+                try {
+                    JSONArray jsonArray = jsonObject1.getJSONArray("teams");
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Log.d("Matches response", jsonObject.toString());
+                            SeasonObject seasonObject = new SeasonObject();
+                            seasonObject.setClubId(String.valueOf(jsonObject.getInt("id")));
+                            seasonObject.setPrice(2500);
+                            seasonObject.setClubLocation(jsonObject.getString("location"));
+                            seasonObject.setClubStadium(jsonObject.getString("stadium"));
+                            seasonObject.setClubname(jsonObject.getString("name"));
+
+                            objects.add(seasonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("Matches response", e.getLocalizedMessage() );
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getContext(),volleyError.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                Log.d("Volley Error", volleyError.getLocalizedMessage());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+        return objects;
     }
 
     List<IMainObject> mainMatchObjects = new ArrayList<>();

@@ -4,14 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mike.footballtickets.Activities.CartActivity;
 import com.example.mike.footballtickets.Activities.MainActivity;
 import com.example.mike.footballtickets.Adapter.MainAdapter;
@@ -21,6 +32,10 @@ import com.example.mike.footballtickets.Pojo.CartObject;
 import com.example.mike.footballtickets.Pojo.IMainObject;
 import com.example.mike.footballtickets.Pojo.MainMatchObject;
 import com.example.mike.footballtickets.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,35 +90,106 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    List<IMainObject> objects;
+    SwipeRefreshLayout swipeRefreshLayout;
+    MainAdapter mainAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
-        List<IMainObject> objects = new ArrayList<>();
-        for (int i=1; i <=20; i++){
-            MainMatchObject matchObject = new MainMatchObject();
-            matchObject.setHomeName("Gor Mahia");
-            matchObject.setAwayName("Thika Untd");
-            matchObject.setTime("Sat,21/1/2017");
-            matchObject.setLocation("Nyayo stadium");
-            matchObject.setTicketPrice(100);
-            matchObject.setHomeLogo("not uploaded");
-            matchObject.setAwayLogo("not uploaded");
-            matchObject.setMatchId("001");
+        objects = getMainObjectList();
 
-            objects.add(matchObject);
-        }
-        MainAdapter mainAdapter = new MainAdapter(getContext(),objects,this,null, null);
+        mainAdapter = new MainAdapter(getContext(),objects,this,null, null);
         RecyclerView matchesView = (RecyclerView) view.findViewById(R.id.viewMainmatches);
         matchesView.setAdapter(mainAdapter);
         matchesView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
 
 
+        swipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.refereshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                objects = getMainObjectList();
+                mainAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        if (isLastItemDisplaying(matchesView)){
+            objects = getMainObjectList();
+            mainAdapter.notifyDataSetChanged();
+        }
+
 
         return view;
+    }
+
+    @NonNull
+    private List<IMainObject> getMainObjectList() {
+        final List<IMainObject> objects = new ArrayList<>();
+        String url = "http://192.168.88.141:3000/matches/show";
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject1) {
+                try {
+                    JSONArray jsonArray = jsonObject1.getJSONArray("matches");
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Log.d("Matches response", jsonObject.toString());
+                            MainMatchObject mainMatchObject = new MainMatchObject();
+                            mainMatchObject.setMatchId(String.valueOf(jsonObject.getInt("id")));
+                            mainMatchObject.setHomeName(jsonObject.getString("home_team"));
+                            mainMatchObject.setAwayName(jsonObject.getString("away_team"));
+                            mainMatchObject.setTime(jsonObject.getString("date"));
+                            mainMatchObject.setTicketPrice((int)jsonObject.getDouble("price"));
+                            objects.add(mainMatchObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("Matches response", e.getLocalizedMessage() );
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getContext(),volleyError.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                Log.d("Volley Error", volleyError.getLocalizedMessage());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+        return objects;
+    }
+
+    /**
+     * Check whether the last item in RecyclerView is being displayed or not
+     *
+     * @param recyclerView which you would like to check
+     * @return true if last position was Visible and false Otherwise
+     */
+    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        swipeRefreshLayout.setRefreshing(true);
+        mainMatchObjects = getMainObjectList();
+        mainAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -131,25 +217,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
     }
 
     List<IMainObject> mainMatchObjects = new ArrayList<>();
-//    public List<IMainObject> getMatchObjectsToCartObjects(){
-//        List<IMainObject> cartObjectList = new ArrayList<>();
-//        if (mainMatchObjects != null){
-//            for (MainMatchObject object:mainMatchObjects){
-//                CartObject cartObject = new CartObject();
-//                cartObject.setHomeTeam(object.getHomeName());
-//                cartObject.setAwayTeam(object.getAwayName());
-//                cartObject.setLocation(object.getLocation());
-//                cartObject.setMatchId(object.getMatchId());
-//                cartObject.setTime(object.getTime());
-//                cartObject.setPrice(object.getTicketPrice());
-//                cartObject.setHomeLogo(object.getHomeLogo());
-//                cartObject.setAwaylogo(object.getAwayLogo());
-//                cartObject.setNumberOfTickets(1);
-//                cartObjectList.add(cartObject);
-//            }
-//        }
-//        return cartObjectList;
-//    }
+
 
     public void addMatchObjects(IMainObject object1){
         if (!mainMatchObjects.contains(object1)){

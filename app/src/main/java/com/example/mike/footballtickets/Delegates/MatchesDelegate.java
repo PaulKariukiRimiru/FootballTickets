@@ -88,7 +88,7 @@ public class MatchesDelegate extends AdapterDelegate<List<IMainObject>> {
                 Log.d("SELECTED ITEM AT: ", String.valueOf(position));
                 if (mainMatchObjects.contains(matchObject)){
 
-                    transferInterface.setValues(matchObject);
+                    //transferInterface.setValues(matchObject);
                 }else {
                     transferInterface.setValues(matchObject);
                     mainMatchObjects.add(matchObject);
@@ -101,8 +101,10 @@ public class MatchesDelegate extends AdapterDelegate<List<IMainObject>> {
             public void onClick(View v) {
                 Log.d("SELECTED ITEM AT: ", String.valueOf(position));
                 if (mainMatchObjects.contains(matchObject)){
+                    Log.d("item duplicate ", String.valueOf(position));
                     transferInterface.setValues(matchObject);
                 }else {
+                    Log.d("item not duplicate ", String.valueOf(position));
                     transferInterface.setValues(matchObject);
                     mainMatchObjects.add(matchObject);
                 }

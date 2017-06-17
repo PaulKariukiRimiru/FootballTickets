@@ -2,6 +2,8 @@ package com.example.mike.footballtickets.Custom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -94,17 +96,48 @@ public class VolleyEngine {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d("Login response", jsonObject.toString());
                     if (jsonObject.getBoolean("error")){
                         Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                         loadingView.setVisibility(View.INVISIBLE);
                     }else {
                         Toast.makeText(context,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                         loadingView.setVisibility(View.INVISIBLE);
-                        if (!jsonObject.getString("team_id").isEmpty()){
+                        if (jsonObject.isNull("team_id")){
+                            Log.d("Login response", jsonObject.toString());
+                            String name = jsonObject.getString("name");
+                            int id = jsonObject.getInt("id");
+
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            if (preferences.contains("id")){
+                                editor.remove("id");
+                                editor.putInt("id", jsonObject.getInt("id"));
+                                if (preferences.contains("amount")){
+                                    editor.remove("amount");
+                                    editor.putInt("amount", jsonObject.getInt("amount"));
+                                }
+                                editor.apply();
+                            }else {
+                                editor.putInt("id", jsonObject.getInt("id"));
+                                editor.putInt("amount", jsonObject.getInt("amount"));
+                                editor.apply();
+                            }
+
                             Intent intent = new Intent(context, HomeActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("id", id);
+
                             context.startActivity(intent);
                         }else {
+                            String name = jsonObject.getString("name");
+                            int id = jsonObject.getInt("team_id");
+                            int ammount = jsonObject.getInt("ammount");
+
                             Intent intent = new Intent(context, TeamMainActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("id", id);
+                            intent.putExtra("ammount", ammount);
                             context.startActivity(intent);
                         }
                     }
