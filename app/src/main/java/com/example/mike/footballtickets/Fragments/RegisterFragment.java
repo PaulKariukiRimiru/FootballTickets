@@ -105,7 +105,7 @@ public class RegisterFragment extends Fragment implements NavigationInterface{
                         loadingView.setVisibility(View.VISIBLE);
 
                         VolleyEngine volleyEngine = new VolleyEngine(getContext());
-                        String url = "http://192.168.88.141:3000/users/register";
+                        String url = "http://104.236.7.202:3000/users/register";
                         volleyEngine.postContentRegister(url,params,loadingView, RegisterFragment.this);
                     }
 

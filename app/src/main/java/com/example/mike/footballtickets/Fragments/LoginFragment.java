@@ -93,7 +93,7 @@ public class LoginFragment  extends Fragment implements NavigationInterface{
             if (name.getText().length() == 0 || password.getText().length() == 0){
                 Snackbar.make(v, "Fill all fields",Snackbar.LENGTH_SHORT).show();
             }else {
-                String url = "http://192.168.88.141:3000/users/authenticate";
+                String url = "http://104.236.7.202:3000/users/authenticate";
                 VolleyEngine volleyEngine = new VolleyEngine(getContext());
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", name.getText().toString());

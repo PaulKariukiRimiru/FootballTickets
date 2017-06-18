@@ -79,7 +79,7 @@ public class Account extends AppCompatActivity implements DataRemovalInterface, 
 
 
         listObjects = new ArrayList<>();
-        String url = "http://192.168.88.141:3000/tickets/show/"+id;
+        String url = "http://104.236.7.202:3000/tickets/show/"+id;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {

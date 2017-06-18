@@ -93,10 +93,12 @@ public class TeamMainActivity extends AppCompatActivity
                 setContentView(mScannerView);
                 mScannerView.setResultHandler(TeamMainActivity.this);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-                    } else
-                        mScannerView.startCamera();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                        } else
+                            mScannerView.startCamera();
+                    }
                 }else {
                     mScannerView.startCamera();
                 }

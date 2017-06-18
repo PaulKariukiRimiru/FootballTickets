@@ -105,7 +105,7 @@ public class AddMoneyFragment extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://192.168.88.141:3000/users/wallet/topup";
+                String url = "http://104.236.7.202:3000/users/wallet/topup";
                 StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

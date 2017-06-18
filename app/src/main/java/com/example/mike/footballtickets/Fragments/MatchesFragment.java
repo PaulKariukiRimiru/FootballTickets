@@ -122,7 +122,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
     @NonNull
     private List<IMainObject> getMainObjectList() {
         final List<IMainObject> objects = new ArrayList<>();
-        String url = "http://192.168.88.141:3000/matches/show";
+        String url = "http://104.236.7.202:3000/matches/show";
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject1) {
