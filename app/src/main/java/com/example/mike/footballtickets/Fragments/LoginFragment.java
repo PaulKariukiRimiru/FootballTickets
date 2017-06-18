@@ -95,10 +95,12 @@ public class LoginFragment  extends Fragment implements NavigationInterface{
             }else {
                 String url = "http://104.236.7.202:3000/users/authenticate";
                 VolleyEngine volleyEngine = new VolleyEngine(getContext());
+                loadingView.setVisibility(View.VISIBLE);
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", name.getText().toString());
                 params.put("password", password.getText().toString());
                 volleyEngine.postContentLogin(url, params, loadingView, LoginFragment.this);
+
             }
 
             }

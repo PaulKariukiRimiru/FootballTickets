@@ -2,8 +2,10 @@ package com.example.mike.footballtickets.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -115,16 +117,20 @@ public class PaymentFragment extends Fragment {
             }
         });
 
+
+
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //mListener.pay();
-
                 List<IMainObject> mainObjectList = cartList.getCartobjects();
+
                 for (IMainObject mainObject : mainObjectList){
                     String url = "";
                     RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                     if (mainObject instanceof CartObject){
+                        final boolean[] success = {false};
+                        CartObject cartObject = (CartObject) mainObject;
                         StringRequest stringRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
@@ -133,6 +139,7 @@ public class PaymentFragment extends Fragment {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
+                                success[0] = true;
 
                             }
                         }){
@@ -144,7 +151,11 @@ public class PaymentFragment extends Fragment {
                             }
                         };
                         requestQueue.add(stringRequest);
+                        if (!success[0]){
+                            break;
+                        }
                     }else if (mainObject instanceof SeasonCartObject){
+                        final SeasonCartObject cartObject = (SeasonCartObject) mainObject;
                         StringRequest stringRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
@@ -159,7 +170,11 @@ public class PaymentFragment extends Fragment {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 HashMap<String, String> params = new HashMap<>();
-
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                params.put("team_id", cartObject.getClubId());
+                                params.put("user_id", String.valueOf(preferences.getInt("id",1)));
+                                params.put("price", String.valueOf(cartObject.getPrice()));
+                                params.put("seasonal_ticket", "True");
                                 return super.getParams();
                             }
                         };

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -90,7 +91,7 @@ public class VolleyEngine {
         return mainObjects;
     }
 
-    public void postContentLogin(String url, final HashMap<String, String> params, final InsLoadingView loadingView, final NavigationInterface navigationInterface){
+    public void postContentLogin(String url, final HashMap<String, String> params, final InsLoadingView loadingView, final Fragment fragment){
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -124,6 +125,10 @@ public class VolleyEngine {
                                 editor.apply();
                             }
 
+                            loadingView.setVisibility(View.GONE);
+
+                            fragment.getActivity().finish();
+
                             Intent intent = new Intent(context, HomeActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("id", id);
@@ -149,7 +154,8 @@ public class VolleyEngine {
                                 editor.putInt("amount", jsonObject.getInt("amount"));
                                 editor.apply();
                             }
-
+                            fragment.getActivity().finish();
+                            loadingView.setVisibility(View.GONE);
                             Intent intent = new Intent(context, TeamMainActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("id", id);
@@ -160,7 +166,7 @@ public class VolleyEngine {
                 } catch (JSONException e) {
 
                     Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    loadingView.setVisibility(View.INVISIBLE);
+                    loadingView.setVisibility(View.GONE);
                     e.printStackTrace();
                 }
 
@@ -170,7 +176,7 @@ public class VolleyEngine {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                loadingView.setVisibility(View.INVISIBLE);
+                loadingView.setVisibility(View.GONE);
             }
         }){
             @Override

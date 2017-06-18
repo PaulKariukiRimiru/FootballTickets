@@ -84,8 +84,7 @@ public class MatchesDelegate extends AdapterDelegate<List<IMainObject>> {
             public void onClick(View view) {
                 Log.d("SELECTED ITEM AT: ", String.valueOf(position));
                 if (mainMatchObjects.contains(matchObject)){
-
-                    //transferInterface.setValues(matchObject);
+                    transferInterface.setValues(matchObject);
                 }else {
                     transferInterface.setValues(matchObject);
                     mainMatchObjects.add(matchObject);

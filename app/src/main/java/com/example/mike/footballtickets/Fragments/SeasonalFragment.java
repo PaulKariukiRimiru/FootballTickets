@@ -130,6 +130,12 @@ public class SeasonalFragment extends Fragment implements DataTransferInterface 
         }
         return false;
     }
+
+    public void refreshLayout(List<IMainObject> mainObjects){
+        objects = mainObjects;
+        mainAdapter.notifyDataSetChanged();
+    }
+
     @NonNull
     private List<IMainObject> getMainObjectList() {
         final List<IMainObject> objects = new ArrayList<>();
@@ -151,6 +157,7 @@ public class SeasonalFragment extends Fragment implements DataTransferInterface 
                             seasonObject.setClubname(jsonObject.getString("name"));
 
                             objects.add(seasonObject);
+                            refreshLayout(objects);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("Matches response", e.getLocalizedMessage() );

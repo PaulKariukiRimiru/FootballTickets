@@ -2,6 +2,7 @@ package com.example.mike.footballtickets.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -93,6 +94,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
+
         objects = getMainObjectList();
 
         mainAdapter = new MainAdapter(getContext(),objects,this,null, null);
@@ -105,8 +107,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                objects = getMainObjectList();
-                mainAdapter.notifyDataSetChanged();
+
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -117,6 +118,10 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
 
 
         return view;
+    }
+    public void refreshLayout(List<IMainObject> mainObjects){
+        objects = mainObjects;
+        mainAdapter.notifyDataSetChanged();
     }
 
     @NonNull
@@ -139,6 +144,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
                             mainMatchObject.setTime(jsonObject.getString("date"));
                             mainMatchObject.setTicketPrice((int)jsonObject.getDouble("price"));
                             objects.add(mainMatchObject);
+                            refreshLayout(objects);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("Matches response", e.getLocalizedMessage() );
@@ -214,8 +220,8 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
 
 
     public void addMatchObjects(IMainObject object1){
+        MainMatchObject object = (MainMatchObject) object1;
         if (!mainMatchObjects.contains(object1)){
-            MainMatchObject object = (MainMatchObject) object1;
             CartObject cartObject = new CartObject();
             cartObject.setHomeTeam(object.getHomeName());
             cartObject.setAwayTeam(object.getAwayName());
@@ -227,7 +233,7 @@ public class MatchesFragment extends Fragment implements DataTransferInterface {
             cartObject.setAwaylogo(object.getAwayLogo());
             cartObject.setNumberOfTickets(1);
 
-            mainMatchObjects.add(cartObject);
+            mainMatchObjects.add(object1);
             mListener.addCount();
             mListener.addMatchesCartObject(cartObject);
         }
