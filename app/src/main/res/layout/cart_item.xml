@@ -25,7 +25,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imghome"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/football"
                 android:contentDescription="Home logo" />
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                     android:layout_height="100dp"
                     android:id="@+id/imgaway"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/football"
                     android:contentDescription="Away logo" />
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"

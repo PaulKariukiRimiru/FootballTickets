@@ -13,6 +13,12 @@
         <activity
             android:name=".Activities.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".Activities.WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,14 +26,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.WelcomeActivity"
-            android:label="@string/title_activity_welcome"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Activities.CartActivity"
             android:label="@string/title_activity_cart"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mike.footballtickets.Activities.HomeActivity" />
+        </activity>
         <activity
             android:name=".Activities.Account"
             android:label="@string/title_activity_account"

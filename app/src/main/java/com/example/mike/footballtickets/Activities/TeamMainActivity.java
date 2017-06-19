@@ -32,6 +32,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -43,6 +44,10 @@ import com.example.mike.footballtickets.Pojo.MainMatchObject;
 import com.example.mike.footballtickets.Pojo.TeamObject;
 import com.example.mike.footballtickets.Pojo.TicketObject;
 import com.example.mike.footballtickets.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,21 +111,44 @@ public class TeamMainActivity extends AppCompatActivity
         });
 
 
-        List<IMainObject> objects = new ArrayList<>();
         String url = ""+id;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String s) {
+            public void onResponse(JSONObject jsonObject1) {
+                try {
+                    JSONArray jsonArray = jsonObject1.getJSONArray("matches");
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Log.d("Matches response", jsonObject.toString());
+                            TeamObject teamObject = new TeamObject();
+                            teamObject.setOpponent(jsonObject.getString(""));
+                            teamObject.setTickets(jsonObject.getString(""));
+                            teamObject.setSold(jsonObject.getString(""));
+                            int price=300;
+                            teamObject.setAmmount(String.valueOf(price * Integer.parseInt(teamObject.getSold())));
+                            objects.add(teamObject);
+                            refreshLayout(objects);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("Matches response", e.getLocalizedMessage() );
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                Toast.makeText(TeamMainActivity.this,volleyError.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                Log.d("Volley Error", volleyError.getLocalizedMessage());
             }
         });
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(request);
+        requestQueue.add(jsonArrayRequest);
 
         TeamObject teamObject = (TeamObject) objects.get(0);
         opponent.setText(teamObject.getOpponent());
@@ -128,13 +156,20 @@ public class TeamMainActivity extends AppCompatActivity
         sold.setText(teamObject.getSold());
         ammount.setText(teamObject.getAmmount());
 
-        MainAdapter mainAdapter = new MainAdapter(this,objects,this,null, null);
+        mainAdapter = new MainAdapter(this,objects,this,null, null);
         RecyclerView matchesView = (RecyclerView) findViewById(R.id.viewMainmatches);
         matchesView.setAdapter(mainAdapter);
         matchesView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
 
 
 
+    }
+    List<IMainObject> objects = new ArrayList<>();
+    MainAdapter mainAdapter;
+
+    public void refreshLayout(List<IMainObject> mainObjects){
+        objects = mainObjects;
+        mainAdapter.notifyDataSetChanged();
     }
 
     @Override
