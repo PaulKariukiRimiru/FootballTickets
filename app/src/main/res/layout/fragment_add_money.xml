@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:minHeight="300dp"
     android:minWidth="300dp"
-    tools:context="com.example.mike.footballtickets.Fragments.AddMoneyFragment">
+    tools:context="com.example.mike.footballtickets.myk.Fragments.AddMoneyFragment">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

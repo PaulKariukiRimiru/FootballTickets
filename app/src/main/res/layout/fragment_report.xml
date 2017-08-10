@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mike.footballtickets.Fragments.ReportFragment"
+    tools:context="com.example.mike.footballtickets.myk.Fragments.ReportFragment"
     android:minWidth="300dp"
     android:minHeight="300dp">
 

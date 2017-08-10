@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mike.footballtickets.Activities.TeamAccount">
+    tools:context="com.example.mike.footballtickets.myk.Activities.TeamAccount">
 
     <include layout="@layout/content_team_account" />
 

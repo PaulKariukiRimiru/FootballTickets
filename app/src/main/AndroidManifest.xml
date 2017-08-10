@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mike.footballtickets">
+    package="myk.project.FootballTickets">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,14 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name="myk.project.Activities.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".Activities.WelcomeActivity"
-            android:label="@string/title_activity_welcome"
-            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,53 +20,59 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.CartActivity"
+            android:name="myk.project.Activities.WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
+        <activity
+            android:name="myk.project.Activities.CartActivity"
             android:label="@string/title_activity_cart"
-            android:parentActivityName=".Activities.HomeActivity"
+            android:parentActivityName="myk.project.Activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mike.footballtickets.Activities.HomeActivity" />
+                android:value="com.example.mike.footballtickets.myk.Activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".Activities.Account"
+            android:name="myk.project.Activities.Account"
             android:label="@string/title_activity_account"
-            android:parentActivityName=".Activities.HomeActivity"
+            android:parentActivityName="myk.project.Activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mike.footballtickets.Activities.HomeActivity" />
+                android:value="com.example.mike.footballtickets.myk.Activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".Activities.QrScannerAcitvity"
+            android:name="myk.project.Activities.QrScannerAcitvity"
             android:label="@string/title_activity_qr_scanner_acitvity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.Payments" />
-        <activity android:name=".Activities.AboutActivity" />
+        <activity android:name="myk.project.Activities.Payments" />
+        <activity android:name="myk.project.Activities.AboutActivity" />
         <activity
-            android:name=".Activities.TeamAccount"
+            android:name="myk.project.Activities.TeamAccount"
             android:label="@string/title_activity_team_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.TeamMainActivity"
+            android:name="myk.project.Activities.TeamMainActivity"
             android:label="@string/title_activity_team_main"
             android:theme="@style/AppTheme.NoActionBar" >
 
         </activity>
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name="myk.project.Activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".Activities.WalletActivity"
+            android:name="myk.project.Activities.WalletActivity"
             android:label="@string/title_activity_wallet"
-            android:parentActivityName=".Activities.HomeActivity"
+            android:parentActivityName="myk.project.Activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mike.footballtickets.Activities.HomeActivity" />
+                android:value="com.example.mike.footballtickets.myk.Activities.HomeActivity" />
         </activity>
     </application>
 

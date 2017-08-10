@@ -6,4 +6,4 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment"
     android:orientation="vertical"
-    tools:context="com.example.mike.footballtickets.Activities.Payments"/>
+    tools:context="com.example.mike.footballtickets.myk.Activities.Payments"/>
